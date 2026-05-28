@@ -4,7 +4,6 @@ test_data.csv
 linux-amd64/
 spark-operator-*.tgz
 helm-*.tar.gz
-Dockerfile.pyspark
 spark/cd
 spark/spark-job-*.yaml
 spark/perf_result.txt
