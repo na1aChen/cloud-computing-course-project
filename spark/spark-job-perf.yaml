@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: spark-performance
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+      - name: spark
+        image: swr.cn-east-3.myhuaweicloud.com/nalacc2405/pyspark:3.4
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "2"
+          limits:
+            memory: "4Gi"
+        command: ["python", "/opt/spark/work/perf.py"]
+      restartPolicy: Never

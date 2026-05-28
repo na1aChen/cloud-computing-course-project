@@ -1,0 +1,8 @@
+FROM apache/spark-py:v3.4.0
+COPY spark/wordcount.py /opt/spark/work/
+COPY spark/data_clean.py /opt/spark/work/
+COPY spark/analysis.py /opt/spark/work/
+COPY spark/analysis_all.py /opt/spark/work/
+COPY spark/perf.py /opt/spark/work/
+COPY douban_movies.csv /opt/spark/work/
+WORKDIR /opt/spark/work
