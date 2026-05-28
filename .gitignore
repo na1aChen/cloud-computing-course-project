@@ -11,3 +11,4 @@ spark/perf_result.txt
 spark/douban_movies_clean.csv
 *.md
 !CLAUDE.md
+!.github/**

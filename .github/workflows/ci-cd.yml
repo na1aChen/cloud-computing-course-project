@@ -1,0 +1,47 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build backend image
+        run: docker build -t backend:v1 ./backend
+
+      - name: Test backend
+        run: |
+          docker run -d --name backend-test -p 5000:5000 -e REDIS_HOST=localhost backend:v1
+          sleep 3
+          curl -s http://localhost:5000/api/ping | grep "ok"
+          echo "Backend test passed"
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build frontend image
+        run: docker build -t frontend:v1 ./frontend
+
+  build-pyspark:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build PySpark image
+        run: docker build -t pyspark:3.4 -f Dockerfile.pyspark .
+
+      - name: Run wordcount test
+        run: |
+          docker run --rm pyspark:3.4 /opt/spark/bin/spark-submit --master 'local[2]' /opt/spark/work/wordcount.py 2>&1 | grep -q "ShutdownHookManager"
+          echo "PySpark test passed"
